@@ -3,57 +3,54 @@ package com.example.myapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import java.util.*
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
-    private var lastName : String = "sdfsd";
+    private var lastName : String = "sdfsd"
+    private lateinit var test: Test
+    private lateinit var testOne: TestOne
+    private lateinit var testFour: TestFour
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var hashMap = HashMap<String, String>()
-
         object : Thread() {
             override fun run() {
                 super.run()
-                Thread.sleep(1000)
+                sleep(1000)
                 Log.i("LLL", "你好啊刘少华")
             }
         }.start()
 
-        thread(true, true, null, "testThread", 3, { test("王捷1111") })
-        thread(true, true, null, "testThread", 2, { test("王捷2222") })
-        thread(true, true, null, "testThread", 4, { test("王捷3333") })
+        thread(
+            start = true,
+            isDaemon = true,
+            contextClassLoader = null,
+            name = "testThread",
+            priority = 3,
+            block = { "王捷1111".test() })
 
         Thread(Runnable { Log.i("LLL", "你好啊王捷") }).start()
 
-        var b: Boolean = false
-
-        if (b) {
-
-        } else {
-
-        }
-
-        var test: Test = Test("wangjie", 1, "哈哈哈")
+        test = Test("wangjie", 1, "哈哈哈")
         test.test = "qweqqweqwe"
         test.method1("方法一")
         test.testtest()
         Log.i("TTT", test.test)
 
-        var testTwo: TestTwo = TestTwo("wangjie")
-        Log.i("TTT", testTwo.testTwo.toUpperCase())
+        Log.i("TTT", TestTwo("wangjie").testTwo.toUpperCase(Locale.CHINESE))
         print(lastName)
 
-        val testOne: TestOne = TestOne("sdf")
+        testOne = TestOne("sdf")
         testOne.testtest("asdasd")
 
-        val testOneTwo: TestOne.TestOneTwo = TestOne.TestOneTwo()
         val string: String = TestOne.TestOneTwo().foo()
         Log.i("GGG", string)
 
-        val testFour: TestFour = TestFour()
+        testFour = TestFour()
         testFour.setInterface(object : TestFour.Inte1 {
             override fun test() {
                 //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -62,11 +59,10 @@ class MainActivity : AppCompatActivity() {
         })
         testFour.method()
 
-        val testFive: TestFive = TestFive("王捷刘少华", 18)
     }
 
-    private fun test(string: String) {
-        Log.i("HHH", "王捷喜欢刘少华----->" + string)
+    private fun String.test() {
+        Log.i("HHH", "王捷喜欢刘少华----->" + this)
     }
 }
 
